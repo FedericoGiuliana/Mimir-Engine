@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: estrazione-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: estratto
+        image: ziofededocker/estrazione:latest
+        command: ["echo", "Scaricato file zip e ricaricato senza la compressione"]
+        env:
+        - name: ENDPOINT
+          value: ""
+        - name: MINIO_ACCESS_KEY
+          value: ""
+        - name: MINIO_SECRET_KEY
+          value: ""
+      restartPolicy: Never
+  backoffLimit: 0
+
+
+
