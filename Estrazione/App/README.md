@@ -1,4 +1,4 @@
-# Download zip files from minIO in Python using Boto3
+# Download the zip files from minIO in Python using Boto3 and upload the unzipped file
 
 ## Getting Started
 
@@ -28,11 +28,6 @@ Use pull command to download the lastest MinIO docker image:
 docker pull minio/minio
 ```
 
-Use pull command to download the 'estrazione' docker image:
-```
-docker pull ziofededocker/estrazione
-```
-
 Create the container and start MinIO:
 ```
 docker run -t -d -p 9000:9000 --name miniozf \
@@ -44,6 +39,34 @@ minio/minio server /data
 
 There must be a bucket named "bucketzf" inside with a zip folder inside named "Compressa.zip. Inside the folder two files, 'testo.txt' and 'model.py' and a second bucket named "bucketzf2".
 
+##There are 3 different ways to start the application:
+### 1. Start the application locally:
+Enter the Estrazione/App folder and start the python program estrazione.py:
+```
+python estrazione.py
+```
+
+### 2. Start the application with docker:
+I see which port runs docker with the command:
+```
+ip a
+```
+
+Create the docker image:
+```
+docker build -f Dockerfile -t estrazione .
+```
+
+I start the container by passing it the environment variables:
+```
+docker run -e ENDPOINT=172.17.0.1:9000 -e MINIO_ACCESS_KEY=admin -e MINIO_SECRET_KEY=keystone estrazione 
+```
+
+### 3. Start the application on kubernetes:
+Use pull command to download the 'estrazione' docker image:
+```
+docker pull ziofededocker/estrazione
+```
 
 Now open the jobs.yaml file and set your credentials
 
