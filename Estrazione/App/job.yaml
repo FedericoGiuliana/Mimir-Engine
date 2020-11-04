@@ -7,8 +7,8 @@ spec:
     spec:
       containers:
       - name: estratto
-        image: ziofededocker/estrazione:latest
-        command: ["echo", "Scaricato file zip e ricaricato senza la compressione"]
+        image: ziofededocker/estrazionefile:latest
+        command: ["python", "/app/estrazione.py"]
         env:
         - name: ENDPOINT
           value: ""

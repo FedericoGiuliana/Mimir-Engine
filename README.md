@@ -37,10 +37,12 @@ docker run -t -d -p 9000:9000 --name miniozf \
 minio/minio server /data
 ```
 
-There must be a bucket named "bucketzf" inside with a zip folder inside named "Compressa.zip. Inside the folder two files, 'testo.txt' and 'model.py' and a second bucket named "bucketzf2".
+There must be a bucket inside with a zip folder inside. Inside the folder two files.
 
-##There are 3 different ways to start the application:
+## There are 3 different ways to start the application:
 ### 1. Start the application locally:
+Set the environment variables
+
 Enter the Estrazione/App folder and start the python program estrazione.py:
 ```
 python estrazione.py
@@ -59,13 +61,13 @@ docker build -f Dockerfile -t estrazione .
 
 I start the container by passing it the environment variables:
 ```
-docker run -e ENDPOINT=172.17.0.1:9000 -e MINIO_ACCESS_KEY=admin -e MINIO_SECRET_KEY=keystone estrazione 
+docker run -e ENDPOINT=http://172.17.0.1:9000 -e MINIO_ACCESS_KEY=admin -e MINIO_SECRET_KEY=keystone estrazione 
 ```
 
 ### 3. Start the application on kubernetes:
 Use pull command to download the 'estrazione' docker image:
 ```
-docker pull ziofededocker/estrazione
+docker pull ziofededocker/estrazionefile
 ```
 
 Now open the jobs.yaml file and set your credentials
@@ -86,5 +88,5 @@ kubectl get po
 
 Delete job with the command:
 ```
-kubectl delete jobs [JOBS' NAME]
+kubectl delete [JOBS' NAME]
 ```
