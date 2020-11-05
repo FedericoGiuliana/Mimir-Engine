@@ -16,7 +16,9 @@ spec:
           value: ""
         - name: MINIO_SECRET_KEY
           value: ""
+        imagePullPolicy: IfNotPresent 
       restartPolicy: Never
+      
   backoffLimit: 0
 
 

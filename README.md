@@ -5,9 +5,9 @@
 ### Requirements
 
 This project needs:
-pipenv
+
 ```
-pip install pipenv
+pipenv installed
 Docker installed
 Python 3.7 installed
 Minikube installed
@@ -22,12 +22,7 @@ Start minikube with the command:
 ```
 minikube start
 ```
-
-Use pull command to download the lastest MinIO docker image:
-```
-docker pull minio/minio
-```
-
+ 
 Create the container and start MinIO:
 ```
 docker run -t -d -p 9000:9000 --name miniozf \
@@ -49,7 +44,7 @@ python estrazione.py
 ```
 
 ### 2. Start the application with docker:
-I see which port runs docker with the command:
+We need to reach MinIO, it is running on the host from within the container. On Linux you do this:
 ```
 ip a
 ```
@@ -65,11 +60,6 @@ docker run -e ENDPOINT=http://172.17.0.1:9000 -e MINIO_ACCESS_KEY=admin -e MINIO
 ```
 
 ### 3. Start the application on kubernetes:
-Use pull command to download the 'estrazione' docker image:
-```
-docker pull ziofededocker/estrazionefile
-```
-
 Now open the jobs.yaml file and set your credentials
 
 Use kubectl to send the YAML file to Kubernetes by running the following command:
