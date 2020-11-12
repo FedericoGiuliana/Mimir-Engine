@@ -1,11 +1,14 @@
 from os import path
 import yaml
+import time
 from kubernetes import client, config
 
 JOB_NAME = "estrazione-job"
 
 
-def create_job_object(env_vars={"ENDPOINT":"http://172.17.0.1:9000","MINIO_ACCESS_KEY":"admin","MINIO_SECRET_KEY":"keystone"}):
+def make_job_object(env_vars=None):
+    if env_vars is None:
+    	env_vars = {"ENDPOINT":"http://172.17.0.1:9000","MINIO_ACCESS_KEY":"admin","MINIO_SECRET_KEY":"keystone"}
     env_list = []
     for env_name, env_value in env_vars.items():
         env_list.append( client.V1EnvVar(name=env_name, value=env_value) )
@@ -51,6 +54,14 @@ def update_job(api_instance, job):
         namespace="default",
         body=job)
     print("Job updated. status='%s'" % str(api_response.status))
+    
+    
+def delete_job(api_instance):
+    api_response = api_instance.delete_namespaced_job(
+        name=JOB_NAME,
+        namespace="default",
+        body=client.V1DeleteOptions(propagation_policy='Foreground',grace_period_seconds=5))
+    print("Job deleted. status='%s'" % str(api_response.status))
 
 
 def main():
@@ -58,11 +69,15 @@ def main():
     config.load_kube_config()
     batch_v1 = client.BatchV1Api()
 
-    job = create_job_object()
+    job = make_job_object()
 
     create_job(batch_v1, job)
 
     update_job(batch_v1, job)
+    
+    time.sleep(5)
+    
+    delete_job(batch_v1)
 
 
 if __name__ == '__main__':
