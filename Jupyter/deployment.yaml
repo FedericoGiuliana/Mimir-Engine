@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-deployment
+  labels: 
+      app: jupyter-notebook
+spec:
+  selector:
+    matchLabels:
+      app: jupyter-notebook
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jupyter-notebook
+    spec:
+      containers:
+      - name: jupyter
+        image: jupyter/minimal-notebook
+        ports:
+        - containerPort: 8888
+        imagePullPolicy: Always
+        

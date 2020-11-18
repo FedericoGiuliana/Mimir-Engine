@@ -80,3 +80,9 @@ Delete job with the command:
 ```
 kubectl delete [JOBS' NAME]
 ```
+### 4. Start the application on kubernetes by python:
+Enter the Estrazione/App folder and start the python program creazionejob.py:
+```
+python creazionejob.py
+```
+
