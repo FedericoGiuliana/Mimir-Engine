@@ -45,7 +45,6 @@ def create_service():
             selector={"app": "jupyter-notebook"},
             ports=[client.V1ServicePort(
                 protocol="TCP",
-                node_port=32151,
                 port=8888,
                 target_port=8888
             )]
@@ -60,7 +59,7 @@ def create_ingress(networking_v1_beta1_api):
     body = client.NetworkingV1beta1Ingress(
         api_version="networking.k8s.io/v1beta1",
         kind="Ingress",
-        metadata=client.V1ObjectMeta(name="ingress-example", annotations={
+        metadata=client.V1ObjectMeta(name="jupyter-ingress", labels={"app":"jupyter-notebook"}, annotations={
             "nginx.ingress.kubernetes.io/rewrite-target": "/"
         }),
         spec=client.NetworkingV1beta1IngressSpec(
@@ -70,8 +69,8 @@ def create_ingress(networking_v1_beta1_api):
                     paths=[client.NetworkingV1beta1HTTPIngressPath(
                         path="/",
                         backend=client.NetworkingV1beta1IngressBackend(
-                            service_port=5000,
-                            service_name="service-example")
+                            service_port=8888,
+                            service_name="jupyter-service")
 
                     )]
                 )
@@ -91,12 +90,11 @@ def main():
     # Fetching and loading local Kubernetes Information
     config.load_kube_config()
     apps_v1_api = client.AppsV1Api()
-    #networking_v1_beta1_api = client.NetworkingV1beta1Api()
+    networking_v1_beta1_api = client.NetworkingV1beta1Api()
 
     create_deployment(apps_v1_api)
-    time.sleep(5)
     create_service()
-    #create_ingress(networking_v1_beta1_api)
+    create_ingress(networking_v1_beta1_api)
 
 
 if __name__ == "__main__":

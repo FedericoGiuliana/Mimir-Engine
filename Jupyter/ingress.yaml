@@ -1,18 +1,17 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: jupyter-ingress
+  labels: 
+    app: jupyter-notebook
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: Jupyter.local
+    - host: pippo.notebooks.kubernetes.local
       http:
         paths:
           - path: /
-            pathType: Prefix
             backend:
-              service:
-                name: jupyter-service
-                port:
-                  number: 8888
+              servicePort: 8888
+              serviceName: jupyter-service
