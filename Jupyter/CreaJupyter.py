@@ -9,23 +9,23 @@ def create_deployment(apps_v1_api):
         image_pull_policy="Always",
         ports=[client.V1ContainerPort(container_port=8888)],
     )
-    # Template
+    
     template = client.V1PodTemplateSpec(
         metadata=client.V1ObjectMeta(labels={"app": "jupyter-notebook"}),
         spec=client.V1PodSpec(containers=[container]))
-    # Spec
+    
     spec = client.V1DeploymentSpec(
         selector=client.V1LabelSelector(match_labels={"app":"jupyter-notebook"}),
         replicas=1,
         template=template)
-    # Deployment
+    
     deployment = client.V1Deployment(
         api_version="apps/v1",
         kind="Deployment",
         metadata=client.V1ObjectMeta(name="jupyter-deployment",labels={"app":"jupyter-notebook"}),
         spec=spec)
-    # Creation of the Deployment in specified namespace
-    # (Can replace "default" with a namespace you may have created)
+    
+    
     apps_v1_api.create_namespaced_deployment(
         namespace="default", body=deployment
     )
@@ -50,8 +50,7 @@ def create_service():
             )]
         )
     )
-    # Creation of the Deployment in specified namespace
-    # (Can replace "default" with a namespace you may have created)
+
     core_v1_api.create_namespaced_service(namespace="default", body=body)
 
 
@@ -78,8 +77,7 @@ def create_ingress(networking_v1_beta1_api):
             ]
         )
     )
-    # Creation of the Deployment in specified namespace
-    # (Can replace "default" with a namespace you may have created)
+   
     networking_v1_beta1_api.create_namespaced_ingress(
         namespace="default",
         body=body
@@ -87,7 +85,7 @@ def create_ingress(networking_v1_beta1_api):
 
 
 def main():
-    # Fetching and loading local Kubernetes Information
+   
     config.load_kube_config()
     apps_v1_api = client.AppsV1Api()
     networking_v1_beta1_api = client.NetworkingV1beta1Api()
