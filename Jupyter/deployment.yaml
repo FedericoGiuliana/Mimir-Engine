@@ -17,6 +17,7 @@ spec:
       containers:
       - name: jupyter
         image: jupyter/minimal-notebook
+        command: ["jupyter", "notebook", "--NotebookApp.token=''"]
         ports:
         - containerPort: 8888
         imagePullPolicy: Always

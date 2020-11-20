@@ -6,6 +6,7 @@ def create_deployment(apps_v1_api):
     container = client.V1Container(
         name="jupyter",
         image="jupyter/minimal-notebook",
+        command=["jupyter", "notebook", "--NotebookApp.token=''"],
         image_pull_policy="Always",
         ports=[client.V1ContainerPort(container_port=8888)],
     )
