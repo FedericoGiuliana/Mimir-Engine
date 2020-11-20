@@ -36,7 +36,7 @@ There must be a bucket inside with a zip folder inside. Inside the folder two fi
 
 ## There are 3 different ways to start the application:
 ### 1. Start the application locally:
-Set the environment variables
+Set the environment variables.
 
 Enter the Estrazione/App folder and start the python program estrazione.py:
 ```
