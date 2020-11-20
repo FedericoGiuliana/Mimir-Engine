@@ -1,4 +1,4 @@
-# Create a Jupyter notebook
+# Create and Delete a Jupyter notebook
 
 ## Getting Started
 
@@ -21,6 +21,10 @@ Start minikube with the command:
 ```
 minikube start
 ```
+enable ingress controller:
+```
+minikube addons enable ingress 
+```
 
 ## There are 2 different ways to start the application:
 ### 1. Start the application on kubernetes by python:
@@ -39,7 +43,7 @@ Open /ect/hosts file and set your local DNS with the name "pippo.notebooks.kuber
 sudo vim /etc/hosts
 ```
 
-Now you can find the notebook jupyter in your browser at host "http://pippo.notebooks.kubernetes.local"
+Now you can find the jupyter notebook in your browser at host "http://pippo.notebooks.kubernetes.local"
 
 ### 2. Start the application on kubernetes by yaml file:
 Enter the Jupyter folder and create deployment and service:
@@ -60,3 +64,10 @@ sudo vim /etc/hosts
 ```
 
 Now you can find the notebook jupyter in your browser at host "http://pippo.notebooks.kubernetes.local"
+
+
+## Delete the jupyter notebook:
+Enter the Jupyter folder and start the python program CancellaJupyter.py:
+```
+python CancellaJupyter.py
+```
