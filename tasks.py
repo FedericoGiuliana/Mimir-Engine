@@ -1,8 +1,4 @@
 import mysql.connector as mysql
-import sys
-sys.path.append('/home/daniele/Mimir-ApiServer')
-from models import Notebook
-from config import db
 from celery import Celery
 
 app = Celery('tasks', 
