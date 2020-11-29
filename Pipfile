@@ -6,6 +6,12 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+pika = "*"
+flask = "*"
+flask-sqlalchemy = "*"
+connexion = {extras = ["swagger-ui"],version = "*"}
+mysql-connector = "*"
+pymysql = "*"
 celery = "*"
 
 [requires]

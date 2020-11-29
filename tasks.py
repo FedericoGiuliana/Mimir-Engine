@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-import time
 import mysql.connector as mysql
 import sys
 sys.path.append('/home/daniele/Mimir-ApiServer')
@@ -9,7 +7,7 @@ from celery import Celery
 
 app = Celery('tasks', 
 	broker= 'pyamqp://daniele:rabbitDD@localhost:5672/ddvhost', 
-	backend= 'rpc://'
+	backend= 'pyamqp://daniele:rabbitDD@localhost:5672/ddvhost',
 	)
 
 db = mysql.connect(
@@ -20,11 +18,17 @@ db = mysql.connect(
     )
 
 @app.task
-def longtime_add(id):
+def createNotebook(id): 
     if id is not None:
+
+        print(f"""
+            ID: {id}
+            ACTION: 'CREATION'
+            """)
+        
         cur = db.cursor()
-        cur.execute("UPDATE mimir.notebook SET status ='created' WHERE id = '%d'" % id)
+        cur.execute("UPDATE mimir.notebook SET status ='created' WHERE id = '%d'" % int(id))
         db.commit()
-        return 1
+        return print("[.] Successfully look db")
     else:
-        return 0
+        return print("[.] Sorry, see around")

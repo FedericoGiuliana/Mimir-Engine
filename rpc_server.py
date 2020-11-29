@@ -1,31 +1,6 @@
 import pika
-from tasks import longtime_add
-'''
-import mysql.connector as mysql
-import sys
-sys.path.append('/home/daniele/Mimir-ApiServer')
-from models import Notebook
-from config import db
+from tasks import createNotebook
 
-
-
-db = mysql.connect(
-    host= "localhost",
-    user = "root",
-    passwd="0satellite0",
-    database= "mimir"
-    )
-
-def fib(id):
-
-    if id is not None:
-        cur = db.cursor()
-        cur.execute("UPDATE mimir.notebook SET status ='created' WHERE id = '%d'" % id)
-        db.commit()
-        return 1
-    else:
-        return 0
-'''
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
 
@@ -33,10 +8,8 @@ channel = connection.channel()
 channel.queue_declare(queue='rpc_queue')
 
 def on_request(ch, method, props, body):
-    n = int(body)
 
-    print(" [.] fib(%s)" % n)
-    response = longtime_add(n)  #change fib with longtime_add
+    response = createNotebook(body) 
 
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
