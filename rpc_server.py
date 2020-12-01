@@ -1,5 +1,5 @@
 import pika
-from tasks import createNotebook
+from tasks import createNotebook, deleteNotebook
 import json
 
 connection = pika.BlockingConnection(
@@ -9,8 +9,14 @@ channel = connection.channel()
 channel.queue_declare(queue='rpc_queue')
 
 def on_request(ch, method, props, body):
-	response = createNotebook(json.loads(body)) 
-	
+
+	message = json.loads(body)
+
+	if(message.get("action") == 'Create'):
+		response = createNotebook(message) 
+	else:
+		response = deleteNotebook(message)
+
 	ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = \
