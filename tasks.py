@@ -14,16 +14,16 @@ db = mysql.connect(
     )
 
 @app.task
-def createNotebook(id): 
-    if id is not None:
+def createNotebook(message): 
+    if message is not None:
 
         print(f"""
-            ID: {id}
-            ACTION: 'CREATION'
+            ID: {message.get('id')}
+            ACTION: {message.get('action')}
             """)
         
         cur = db.cursor()
-        cur.execute("UPDATE mimir.notebook SET status ='created' WHERE id = '%d'" % int(id))
+        cur.execute("UPDATE mimir.notebook SET status ='created' WHERE id = '%d'" % int(message.get('id')))
         db.commit()
         return print("[.] Successfully look db")
     else:
