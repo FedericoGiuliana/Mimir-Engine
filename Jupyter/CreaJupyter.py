@@ -1,7 +1,6 @@
 from kubernetes import client, config
 import time
 
-
 def create_deployment(apps_v1_api):
     container = client.V1Container(
         name="jupyter",
@@ -85,7 +84,7 @@ def create_ingress(networking_v1_beta1_api):
     )
 
 
-def main():
+def crea():
    
     config.load_kube_config()
     apps_v1_api = client.AppsV1Api()
@@ -97,4 +96,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    crea()

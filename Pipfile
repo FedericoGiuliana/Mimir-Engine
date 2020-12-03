@@ -13,6 +13,7 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 mysql-connector = "*"
 pymysql = "*"
 celery = "*"
+kubernetes = "*"
 
 [requires]
 python_version = "3.7"

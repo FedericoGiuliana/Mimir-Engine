@@ -1,16 +1,23 @@
 import mysql.connector as mysql
 from celery import Celery
-import time
+from Jupyter.CreaJupyter import crea
+from Jupyter.CancellaJupyter import cancella
+import os
 
+MYSQL_PSSW = os.environ.get("MYSQL_PASSWORD")
+MYSQL_HOST = os.environ.get("MYSQL_HOST")
+MYSQL_USER = os.environ.get("MYSQL_USER")
+CELERY_BROKER= os.environ.get("CELERY_BROKER")
+CELERY_BACKEND= os.environ.get("CELERY_BACKEND")
 app = Celery('tasks', 
-	broker= 'pyamqp://daniele:rabbitDD@localhost:5672/ddvhost', 
-	backend= 'pyamqp://daniele:rabbitDD@localhost:5672/ddvhost',
+	broker= CELERY_BROKER, 
+	backend= CELERY_BACKEND,
 	)
 
 db = mysql.connect(
-    host= "localhost",
-    user = "root",
-    passwd="0satellite0",
+    host= MYSQL_HOST,
+    user = MYSQL_USER,
+    passwd= MYSQL_PSSW,
     database= "mimir"
     )
 
@@ -22,7 +29,8 @@ def createNotebook(message):
             ID: {message.get('id')}
             ACTION: {message.get('action')}
             """)
-
+        crea()
+        
         cur = db.cursor()
         cur.execute("UPDATE mimir.notebook SET status ='created' WHERE id = '%d'" % int(message.get('id')))
         db.commit()
@@ -38,8 +46,8 @@ def deleteNotebook(message):
             ID: {message.get('id')}
             ACTION: {message.get('action')}
             """)
+        cancella()
         
-        time.sleep(5)
         return print("[.] Successfully look db")
     else:
         return print("[.] Sorry, see around")
