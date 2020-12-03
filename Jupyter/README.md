@@ -33,9 +33,10 @@ Enter the Jupyter folder and start the python program CreaJupyter.py:
 python CreaJupyter.py
 ```
 
-Visit the service :
+Search  :
 ```
-minikube service jupyter-service --url
+kubectl describe ingress jupyter-ingress
+
 ```
 
 Open /ect/hosts file and set your local DNS with the name "pippo.notebooks.kubernetes.local":
@@ -55,7 +56,7 @@ kubectl create -f ingress.yaml
 
 Visit the service:
 ```
-minikube service jupyter-service --url
+kubectl describe ingress jupyter-ingress
 ```
 
 Open /ect/hosts file and set your local DNS with the name "pippo.notebooks.kubernetes.local":
