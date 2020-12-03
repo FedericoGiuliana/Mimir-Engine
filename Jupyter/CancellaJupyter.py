@@ -28,7 +28,7 @@ def delete_ingress(api_instance):
     print("Ingress deleted. status='%s'" % str(api_response.status))
 
 
-def main():
+def cancella():
 
     config.load_kube_config()
     apps_v1_api = client.AppsV1Api()
@@ -41,5 +41,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    cancella()
 
