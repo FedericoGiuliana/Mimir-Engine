@@ -90,6 +90,7 @@ def crea():
     apps_v1_api = client.AppsV1Api()
     networking_v1_beta1_api = client.NetworkingV1beta1Api()
 
+    
     create_deployment(apps_v1_api)
     create_service()
     create_ingress(networking_v1_beta1_api)
