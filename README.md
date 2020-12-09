@@ -1,4 +1,4 @@
-# Download the zip files from minIO in Python using Boto3 and upload the unzipped file
+# Start the engine for use the Notebook-jupyter 
 
 ## Getting Started
 
@@ -11,11 +11,15 @@ pipenv installed
 Docker installed
 Python 3.7 installed
 Minikube installed
+Celery installed
+Rabbitmq installed
 ```
 
-### Setup and uploading
-Configure the environment :
+## Setup and launch engine
+###Configure the environment
+
 ```
+pipenv install --dev
 pipenv shell
 ```
 Start minikube with the command:
@@ -23,66 +27,34 @@ Start minikube with the command:
 minikube start
 ```
  
-Create the container and start MinIO:
+Starting with setting the following environment variables:
 ```
-docker run -t -d -p 9000:9000 --name miniozf \
--e "MINIO_ACCESS_KEY=admin" \
--e "MINIO_SECRET_KEY=keystone" \
--v /home/usr/mdata:/data \
-minio/minio server /data
+CELERY_BROKER
+CELERY_BACKEND
+```
+Setting the local dns as described in the README in the Jupyter folder
+
+###Connecting Engine with API-server and create/delete a notebook-jupyter
+Open 4 terminal:
+
+On first terminal start the API-SERVER following this repository: https://github.com/dandamico/Mimir-ApiServer.git
+
+On the second launch rabbitmq with command:
+```
+sudo rabbitmq-server
 ```
 
-There must be a bucket inside with a zip folder inside. Inside the folder two files.
-
-## There are 3 different ways to start the application:
-### 1. Start the application locally:
-Set the environment variables.
-
-Enter the Estrazione/App folder and start the python program estrazione.py:
+On the third  enter in Mimir-Engine folder and launch the celery worker with command:
 ```
-python estrazione.py
+celery -A celery worker --loglevel=info
 ```
 
-### 2. Start the application with docker:
-We need to reach MinIO, it is running on the host from within the container. On Linux you do this:
+On the latest terminal, to listen to the rabbitmq server, launch the command:
 ```
-ip a
-```
-
-Create the docker image:
-```
-docker build -f Dockerfile -t estrazione .
+python rpc_server.py
 ```
 
-I start the container by passing it the environment variables:
-```
-docker run -e ENDPOINT=http://172.17.0.1:9000 -e MINIO_ACCESS_KEY=admin -e MINIO_SECRET_KEY=keystone estrazione 
-```
+Now browse to [http://localhost:5001/api/ui](http://localhost:5001/api/ui) to access SwaggerUI and execute a POST/notebook. Now 
 
-### 3. Start the application on kubernetes:
-Now open the jobs.yaml file and set your credentials
 
-Use kubectl to send the YAML file to Kubernetes by running the following command:
-```
-kubectl create -f job.yaml
-```
-You can see the jods are running if you execute the following command:
-```
-kubectl get jobs
-```
-
-You can see the pods are running if you execute the following command:
-```
-kubectl get po
-```
-
-Delete job with the command:
-```
-kubectl delete [JOBS' NAME]
-```
-### 4. Start the application on kubernetes by python:
-Enter the Estrazione/App folder and start the python program creazionejob.py:
-```
-python creazionejob.py
-```
 

@@ -1,5 +1,8 @@
 from kubernetes import client, config
 import time
+import os 
+
+DOMAIN_NAME= os.environ.get("DOMAIN_NAME")
 
 def create_deployment(apps_v1_api):
     container = client.V1Container(
@@ -63,7 +66,7 @@ def create_ingress(networking_v1_beta1_api, nome):
         }),
         spec=client.NetworkingV1beta1IngressSpec(
             rules=[client.NetworkingV1beta1IngressRule(
-                host=nome+".notebooks.kubernetes.local",
+                host=nome+DOMAIN_NAME,
                 http=client.NetworkingV1beta1HTTPIngressRuleValue(
                     paths=[client.NetworkingV1beta1HTTPIngressPath(
                         path="/",
