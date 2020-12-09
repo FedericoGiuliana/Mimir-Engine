@@ -41,7 +41,7 @@ def create_service():
             name="jupyter-service"
         ),
         spec=client.V1ServiceSpec(
-            type="NodePort",
+            type="ClusterIP",
             selector={"app": "jupyter-notebook"},
             ports=[client.V1ServicePort(
                 protocol="TCP",
@@ -54,7 +54,7 @@ def create_service():
     core_v1_api.create_namespaced_service(namespace="default", body=body)
 
 
-def create_ingress(networking_v1_beta1_api):
+def create_ingress(networking_v1_beta1_api, nome):
     body = client.NetworkingV1beta1Ingress(
         api_version="networking.k8s.io/v1beta1",
         kind="Ingress",
@@ -63,7 +63,7 @@ def create_ingress(networking_v1_beta1_api):
         }),
         spec=client.NetworkingV1beta1IngressSpec(
             rules=[client.NetworkingV1beta1IngressRule(
-                host="pippo.notebooks.kubernetes.local",
+                host=nome+".notebooks.kubernetes.local",
                 http=client.NetworkingV1beta1HTTPIngressRuleValue(
                     paths=[client.NetworkingV1beta1HTTPIngressPath(
                         path="/",
@@ -84,7 +84,7 @@ def create_ingress(networking_v1_beta1_api):
     )
 
 
-def crea():
+def crea(nome):
    
     config.load_kube_config()
     apps_v1_api = client.AppsV1Api()
@@ -93,7 +93,7 @@ def crea():
     
     create_deployment(apps_v1_api)
     create_service()
-    create_ingress(networking_v1_beta1_api)
+    create_ingress(networking_v1_beta1_api,nome)
 
 
 if __name__ == "__main__":
