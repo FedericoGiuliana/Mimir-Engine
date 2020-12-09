@@ -16,7 +16,7 @@ Rabbitmq installed
 ```
 
 ## Setup and launch engine
-###Configure the environment
+### Configure the environment
 
 ```
 pipenv install --dev
@@ -34,7 +34,7 @@ CELERY_BACKEND
 ```
 Setting the local dns as described in the README in the Jupyter folder
 
-###Connecting Engine with API-server and create/delete a notebook-jupyter
+### Connecting Engine with API-server and create/delete a notebook-jupyter
 Open 4 terminal:
 
 On first terminal start the API-SERVER following this repository: https://github.com/dandamico/Mimir-ApiServer.git
