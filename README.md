@@ -54,7 +54,8 @@ On the latest terminal, to listen to the rabbitmq server, launch the command:
 python rpc_server.py
 ```
 
-Now browse to [http://localhost:5001/api/ui](http://localhost:5001/api/ui) to access SwaggerUI and execute a POST/notebook. Now 
+Now browse to [http://localhost:5001/api/ui](http://localhost:5001/api/ui) to access SwaggerUI and execute a POST/notebook.
+Now it's possible delete this notebook with the appropiate operation DELETE/notebook
 
 
 
