@@ -9,6 +9,7 @@ MYSQL_HOST = os.environ.get("MYSQL_HOST")
 MYSQL_USER = os.environ.get("MYSQL_USER")
 CELERY_BROKER= os.environ.get("CELERY_BROKER")
 CELERY_BACKEND= os.environ.get("CELERY_BACKEND")
+DOMAIN_NAME= os.environ.get("DOMAIN_NAME")
 
 app = Celery('tasks', 
 	broker= CELERY_BROKER, 
@@ -30,17 +31,19 @@ def createNotebook(message):
             ID: {message.get('id')}
             ACTION: {message.get('action')}
             """)
-        crea(str(message.get('name')))
+
+        crea(message.get("name")+"-"+str(message.get("id")))
         
         cur = db.cursor()
         cur.execute("UPDATE mimir.notebook SET status ='created' WHERE id = '%d'" % int(message.get('id')))
         db.commit()
-        '''
-        url = "https://pippo.notebooks.kubernetes.local"
+
+        url=message.get("name")+"-"+str(message.get("id"))+DOMAIN_NAME
+        
         cur = db.cursor()
-        cur.execute("UPDATE mimir.notebook SET notebook_url =''%s'' WHERE id = '%d'" % str(url) % int(message.get('id')))
+        cur.execute("UPDATE mimir.notebook SET notebook_url ='%s' WHERE id = '%d'" % (url, int(message.get('id'))))
         db.commit()
-'''
+
         return print("[.] Successfully look db")
     else:
         return print("[.] Sorry, see around")
