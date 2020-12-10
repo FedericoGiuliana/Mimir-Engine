@@ -57,7 +57,8 @@ def create_service():
     core_v1_api.create_namespaced_service(namespace="default", body=body)
 
 
-def create_ingress(networking_v1_beta1_api, nome):
+def create_ingress(networking_v1_beta1_api,name):
+
     body = client.NetworkingV1beta1Ingress(
         api_version="networking.k8s.io/v1beta1",
         kind="Ingress",
@@ -66,7 +67,7 @@ def create_ingress(networking_v1_beta1_api, nome):
         }),
         spec=client.NetworkingV1beta1IngressSpec(
             rules=[client.NetworkingV1beta1IngressRule(
-                host=nome+DOMAIN_NAME,
+                host=name+DOMAIN_NAME,
                 http=client.NetworkingV1beta1HTTPIngressRuleValue(
                     paths=[client.NetworkingV1beta1HTTPIngressPath(
                         path="/",
@@ -80,14 +81,21 @@ def create_ingress(networking_v1_beta1_api, nome):
             ]
         )
     )
-   
-    networking_v1_beta1_api.create_namespaced_ingress(
+
+    temp=0
+    for item in networking_v1_beta1_api.list_namespaced_ingress("default").items:
+        if item.metadata.name=="jupyter-ingress":  
+            networking_v1_beta1_api.patch_namespaced_ingress(body=body, namespace="default", name='jupyter-ingress')
+            temp=1
+
+    if temp==0 :  
+        networking_v1_beta1_api.create_namespaced_ingress(
         namespace="default",
         body=body
     )
 
 
-def crea(nome):
+def crea(name):
    
     config.load_kube_config()
     apps_v1_api = client.AppsV1Api()
@@ -96,7 +104,7 @@ def crea(nome):
     
     create_deployment(apps_v1_api)
     create_service()
-    create_ingress(networking_v1_beta1_api,nome)
+    create_ingress(networking_v1_beta1_api,name)
 
 
 if __name__ == "__main__":

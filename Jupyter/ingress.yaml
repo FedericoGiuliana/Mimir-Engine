@@ -8,10 +8,10 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: pippo.notebooks.kubernetes.local
+    - host: pippo.notebooks.kubernetes
       http:
         paths:
           - path: /
             backend:
               servicePort: 8888
-              serviceName: jupyter-service
+              serviceName: jupyter-service2
