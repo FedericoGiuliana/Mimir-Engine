@@ -1,5 +1,5 @@
 import pika
-from tasks import createNotebook, deleteNotebook
+from tasks import createNotebook, deleteNotebook, createTraining
 import json
 
 connection = pika.BlockingConnection(
@@ -12,10 +12,14 @@ def on_request(ch, method, props, body):
 
 	message = json.loads(body)
 
-	if(message.get("action") == 'Create'):
-		response = createNotebook(message) 
+	if(message.get("type") == 'Notebook'):
+		if(message.get("action") == 'Create'):
+			response = createNotebook(message) 
+		else:
+			response = deleteNotebook(message)
 	else:
-		response = deleteNotebook(message)
+		if(message.get("action") == 'Create'):
+			response = createTraining(message)
 
 	ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
@@ -28,5 +32,5 @@ def on_request(ch, method, props, body):
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue='rpc_queue', on_message_callback=on_request)
 
-print(" [x] Awaiting RPC requests. To exit press CTRL+C ")
+print("[x] Awaiting RPC requests. To exit press CTRL+C ")
 channel.start_consuming()
