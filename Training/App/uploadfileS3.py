@@ -27,6 +27,7 @@ s3 = boto3.resource('s3',
                     config=Config(signature_version='s3v4'),
                     region_name='us-east-1')
 
+client.make_bucket(BUCKET)
 
 # upload a file from local file system '/testo.text' to bucket 'bucketzf' with 'testo.txt' as the object name.
 s3.Bucket(BUCKET).upload_file(MODEL_PATH, NAME_FILE )
