@@ -1,17 +1,17 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: jupyter-ingress
+  name: minio-ingress
   labels: 
-    app: jupyter-notebook
+    app: minio
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: pippo-1.notebooks.kubernetes.local
+    - host: minio.kubernetes.local
       http:
         paths:
           - path: /
             backend:
-              servicePort: 8888
-              serviceName: jupyter-service
+              servicePort: 9000
+              serviceName: minio-service

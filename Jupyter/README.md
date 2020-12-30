@@ -39,12 +39,12 @@ kubectl describe ingress jupyter-ingress
 
 ```
 
-Open /ect/hosts file and set your local DNS with the name "pippo.notebooks.kubernetes.local":
+Open /ect/hosts file and set your local DNS with the name ".notebooks.kubernetes.local":
 ```
 sudo vim /etc/hosts
 ```
 
-Now you can find the jupyter notebook in your browser at host "http://pippo.notebooks.kubernetes.local"
+Now you can find the jupyter notebook in your browser at host "http://pippo-1.notebooks.kubernetes.local"
 
 ### 2. Start the application on kubernetes by yaml file:
 Enter the Jupyter folder and create deployment and service:
@@ -64,7 +64,7 @@ Open /ect/hosts file and set your local DNS with the name "pippo.notebooks.kuber
 sudo vim /etc/hosts
 ```
 
-Now you can find the notebook jupyter in your browser at host "http://pippo.notebooks.kubernetes.local"
+Now you can find the notebook jupyter in your browser at host "http://pippo-1.notebooks.kubernetes.local"
 
 
 ## Delete the jupyter notebook:

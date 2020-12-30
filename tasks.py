@@ -3,7 +3,9 @@ from celery import Celery
 from Jupyter.CreaJupyter import crea
 from Jupyter.CancellaJupyter import cancella
 import os
-#from Training.App.uploadfileS3 import creaTraining
+from Estrazione.App.uploadfile import creaTraining
+from Estrazione.App.creazionejob import creajob
+import time
 
 MYSQL_PSSW = os.environ.get("MYSQL_PASSWORD")
 MYSQL_HOST = os.environ.get("MYSQL_HOST")
@@ -72,8 +74,11 @@ def createTraining(message):
             ID: {message.get('id')}
             ACTION: {message.get('action')}
             """)
-        #creaTraining(message.get("file_name"), message.get("file_path"))
-
+        
+        creaTraining(message.get("file_name"), message.get("file_path"))
+        time.sleep(10)
+        creajob(message.get("file_name"), message.get("file_path") , message.get("id"))
+        
         cur = db.cursor()
         cur.execute("UPDATE mimir.training SET status ='created' WHERE id = '%d'" % int(message.get('id')))
         db.commit()

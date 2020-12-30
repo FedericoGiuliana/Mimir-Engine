@@ -5,7 +5,7 @@ metadata:
   labels: 
       app: jupyter-notebook
 spec:
-  type: NodePort
+  type: CusterIP
   selector:
     app: jupyter-notebook
   ports:

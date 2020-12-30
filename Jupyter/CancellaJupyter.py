@@ -1,21 +1,17 @@
 from os import path
 from kubernetes import client, config
 
-DEPLOYMENT_NAME = "jupyter-deployment"
-SERVICE_NAME = "jupyter-service"
-INGRESS_NAME = "jupyter-ingress"
-
  
 def delete_deployment(api_instance):
     api_response = api_instance.delete_namespaced_deployment(
-        name=DEPLOYMENT_NAME,
+        name="jupyter-deployment",
         namespace="default",
         body=client.V1DeleteOptions(propagation_policy='Foreground',grace_period_seconds=5))
     print("Deployment deleted. status='%s'" % str(api_response.status))
 
 def delete_service(api_instance):
     api_response = api_instance.delete_namespaced_service(
-        name=SERVICE_NAME,
+        name="jupyter-service",
         namespace="default",
         body=client.V1DeleteOptions(propagation_policy='Foreground',grace_period_seconds=5))
     print("Service deleted. status='%s'" % str(api_response.status))

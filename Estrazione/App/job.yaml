@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: estrazione-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: estratto
+        image: ziofededocker/dummy:latest 
+        command: ["python","/app/estrazione.py"]
+        env:
+        - name: ENDPOINT
+          value: "http://minio.kubernetes.local"
+        - name: MINIO_ACCESS_KEY
+          value: "admin"
+        - name: MINIO_SECRET_KEY
+          value: "keystone"
+        - name: BUCKET
+          value: "bucket"
+        - name: FILENAME
+          value: "Compressa.zip"
+        - name: FILEPATH
+          value: "/home/federuntu/Mimir-Engine/Estrazione/App/Compressa.zip"
+        - name: ID_TRAINING
+          value: "2" 
+        imagePullPolicy: Always
+      restartPolicy: Never
+      
+  backoffLimit: 0
+
+
+
