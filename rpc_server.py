@@ -1,9 +1,13 @@
-import pika
+import pika, json, os
 from tasks import createNotebook, deleteNotebook, createTraining
-import json
 
-connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='localhost'))
+host= os.environ.get("HOST_RABBITMQ")
+user= os.environ.get("USER_RABBITMQ")
+password= os.environ.get("PASSWORD_RABBITMQ")	
+
+credentials = pika.PlainCredentials(user, password)
+params = pika.ConnectionParameters(host, 5672, '/', credentials)
+connection = pika.BlockingConnection(params)
 
 channel = connection.channel()
 channel.queue_declare(queue='rpc_queue')
@@ -15,9 +19,10 @@ def on_request(ch, method, props, body):
 	if(message.get("type") == 'Notebook'):
 		if(message.get("action") == 'Create'):
 			response = createNotebook(message) 
-		else:
+		if(message.get("action") == 'Delete'):
 			response = deleteNotebook(message)
-	else:
+	
+	if(message.get("type") == 'Training'):
 		if(message.get("action") == 'Create'):
 			response = createTraining(message)
 

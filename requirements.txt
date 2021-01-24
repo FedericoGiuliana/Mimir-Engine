@@ -1,0 +1,9 @@
+pika 
+flask
+flask-sqlalchemy
+mysql-connector 
+connexion
+pymysql 
+celery 
+kubernetes 
+boto3 
